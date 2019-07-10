@@ -1,3 +1,10 @@
 import React from 'react';
+import Theme from '../utils/theme';
 
-export default () => <div>home page goes here</div>;
+import Home from './home.component';
+
+export default () => (
+    <Theme>
+        <Home />
+    </Theme>
+);
