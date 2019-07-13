@@ -59,7 +59,7 @@ describe('promise the module', () => {
     });
 
     describe('deleteMarker', () => {
-        it('calls http delete via /markers', (done) => {
+        it('calls http delete via /markers/:marker.id', (done) => {
             const spy = jest.spyOn(http, 'delete');
             const response = { id: 'markerId' };
             http.delete.mockResolvedValue(response);
@@ -67,7 +67,7 @@ describe('promise the module', () => {
             deleteMarker({ id: 'markerId' }).then((res) => {
                 expect(res).toEqual(response);
                 expect(spy).toHaveBeenCalledTimes(1);
-                expect(spy).toHaveBeenCalledWith('/markers', { id: 'markerId' });
+                expect(spy).toHaveBeenCalledWith('/markers/markerId');
                 done();
             }).catch(e => e);
         });
