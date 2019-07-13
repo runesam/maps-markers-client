@@ -5,15 +5,15 @@ import Place from '@material-ui/icons/Place';
 import { withStyles } from '@material-ui/core/styles';
 
 type Props = {
-    text: string,
+    name: string,
     classes: { root: {} },
 };
 
 const MarkerComponent = (props: Props) => {
-    const { text, classes } = props;
+    const { name, classes } = props;
     return (
-        <Grid container alignItems="center" direction="column" className={classes.root}>
-            <span>{text}</span>
+        <Grid container alignItems="center" justify="center" direction="column" className={classes.root}>
+            <span>{name}</span>
             <Place />
         </Grid>
     );

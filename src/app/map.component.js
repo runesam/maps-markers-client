@@ -8,42 +8,44 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import MarkerComponent from './marker.component';
 
 type Props = {
+    markers: [],
     zoom?: number,
+    apiKey: string,
     classes: { root: {} },
-    user: { key: string, markers: [] },
     center?: { lat: number, lng: number },
 };
 
 class MapComponent extends PureComponent<Props> {
     static defaultProps = {
         center: {
-            lat: 52.52,
-            lng: 13.40,
+            lat: 51.1657,
+            lng: 10.4515,
         },
-        zoom: 12,
+        zoom: 7,
     };
 
     render() {
         const {
             zoom,
+            apiKey,
             center,
             classes,
-            user: { key, markers },
+            markers,
         } = this.props;
 
-        return key ? (
+        return apiKey ? (
             <Grid container justify="center" className={classes.root}>
                 <GoogleMapReact
+                    center={center}
                     defaultZoom={zoom}
-                    defaultCenter={center}
-                    bootstrapURLKeys={{ key }}
+                    bootstrapURLKeys={{ key: apiKey }}
                 >
                     {markers.map(marker => (
                         <MarkerComponent
+                            key={marker.id}
                             lat={marker.lat}
                             lng={marker.lng}
-                            key={marker.text}
-                            text={marker.text}
+                            name={marker.name}
                         />
                     ))}
                 </GoogleMapReact>
