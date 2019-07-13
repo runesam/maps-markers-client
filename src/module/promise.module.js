@@ -1,15 +1,20 @@
 // @flow
+import http from '../utils/http';
 
-export const user = {
-    key: 'keyGoesHere',
-    markers: [
-        { text: 'Home', lat: 52.4953218, lng: 13.347765 },
-        { text: 'Work', lat: 52.5256814, lng: 13.393472 },
-    ],
+const getUser = () => http.get('/user');
+
+const addMarker = (marker: {}) => http.post('/markers', marker);
+
+const updateMarker = (marker: {}) => http.put('/markers', marker);
+
+const deleteMarker = (marker: {}) => http.delete('/markers', marker);
+
+const getGeoForAddress = (address: string) => http.get(`/geo/${address}`);
+
+export {
+    getUser,
+    addMarker,
+    updateMarker,
+    deleteMarker,
+    getGeoForAddress,
 };
-
-export default ():Promise<any> => new Promise((resolve: function) => {
-    setTimeout(() => {
-        resolve(user);
-    }, 1000);
-});

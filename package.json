@@ -13,7 +13,7 @@
     "flow:watch": "flow-bro watch src/",
     "flow": "flow check src/",
     "test": "jest ./test --coverage",
-    "testWatch": "jest ./test --coverage --watchAll"
+    "test:watch": "jest ./test --coverage --watchAll"
   },
   "dependencies": {
     "@material-ui/core": "^4.0.0",
