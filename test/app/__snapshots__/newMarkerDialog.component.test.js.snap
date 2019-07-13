@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewMarkerDialog <NewMarkerDialogContainer /> matches the snapshot 1`] = `
+<NewMarkerDialog
+  apiKey="fakeKey"
+  classes={
+    Object {
+      "error": "NewMarkerDialog-error-253",
+      "root": "NewMarkerDialog-root-252",
+    }
+  }
+  handleAddMarker={[MockFunction]}
+  handleClose={[MockFunction]}
+  open={true}
+/>
+`;

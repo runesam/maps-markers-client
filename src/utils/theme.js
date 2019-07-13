@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 const palette = {
-    primary: { main: '#004c93' },
-    secondary: { main: '#c70000' },
-    grayed: { main: '#aaaaaa' },
     white: { main: '#FFFFFF' },
     black: { main: '#000000' },
+    grayed: { main: '#aaaaaa' },
+    primary: { main: '#004c93' },
+    secondary: { main: '#c70000' },
 };
 
 const animateMe = {
@@ -28,6 +28,15 @@ export const themeProperties = {
         h6: { color: palette.grayed.main },
         body1: { color: palette.white.main },
         body2: { color: palette.grayed.main },
+    },
+    overrides: {
+        MuiDialog: {
+            paper: {
+                margin: 15,
+                padding: 16,
+                width: '100%',
+            },
+        },
     },
 };
 
