@@ -10,7 +10,11 @@ declare var document: {
     createElement: function,
     body: {
         appendChild: function,
-        style: { margin: string, backgroundColor: string },
+        style: {
+            margin: string,
+            padding: string,
+            backgroundColor: string,
+        },
     },
 };
 
@@ -18,6 +22,7 @@ const appDom = document.createElement('div');
 
 document.body.appendChild(appDom);
 document.body.style.margin = '0px';
+document.body.style.padding = '15px';
 document.body.style.backgroundColor = '#1d1d1d';
 
 const render = (Component) => {

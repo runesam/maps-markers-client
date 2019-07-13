@@ -79,4 +79,65 @@ describe('HomeComponent', () => {
             expect(newState.user.markers.length).toBe(1);
         });
     });
+
+    describe('handleUpdateMarker method', () => {
+        const wrapper = shallow(<HomeComponent />);
+        const markerToUpdate = { id: 3, name: 'marker name' };
+        wrapper.setState({ user: { markers: [markerToUpdate] } });
+
+        const state = wrapper.state();
+        const instance = wrapper.instance();
+        const marker = { id: 5, name: 'marker to update', idToReplace: 3 };
+
+        it('triggers the toggleDialog method', () => {
+            expect(state.user.markers).toEqual([markerToUpdate]);
+
+            const spy = jest.spyOn(instance, 'toggleDialog');
+            instance.handleUpdateMarker(marker);
+
+            const newState = wrapper.state();
+            expect(spy).toHaveBeenCalledTimes(1);
+            expect(newState.marker).toBe(null);
+            expect(newState.user.markers.length).toBe(1);
+            expect(newState.user.markers[0]).toEqual(marker);
+        });
+
+        it('doesn\'t update the markers state', () => {
+            const oldState = { user: { markers: [{ id: 10 }] } };
+            wrapper.setState(oldState);
+            instance.handleUpdateMarker(marker);
+
+            const newState = wrapper.state();
+            expect(newState.user).toEqual(oldState.user);
+        });
+    });
+
+    describe('handleEditMarker method', () => {
+        const wrapper = shallow(<HomeComponent />);
+        const markerToUpdate = { id: 3, name: 'marker name' };
+
+        const instance = wrapper.instance();
+
+        it('triggers the toggleDialog method', () => {
+            const spy = jest.spyOn(instance, 'toggleDialog');
+
+            instance.handleEditMarker(markerToUpdate);
+
+            expect(spy).toHaveBeenCalledTimes(1);
+            expect(wrapper.state().marker).toEqual(markerToUpdate);
+        });
+    });
+
+    describe('handleDeleteMarker method', () => {
+        const wrapper = shallow(<HomeComponent />);
+        const markerToDelete = { id: 3, name: 'marker name' };
+        wrapper.setState({ user: { markers: [markerToDelete] } });
+
+        const instance = wrapper.instance();
+
+        it('remove the passed marker from the markers array', () => {
+            instance.handleDeleteMarker(markerToDelete);
+            expect(wrapper.state().user.markers).toEqual([]);
+        });
+    });
 });
