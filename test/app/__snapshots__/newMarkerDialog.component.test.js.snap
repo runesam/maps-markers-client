@@ -11,6 +11,8 @@ exports[`NewMarkerDialog <NewMarkerDialogContainer /> matches the snapshot 1`] =
   }
   handleAddMarker={[MockFunction]}
   handleClose={[MockFunction]}
+  handleUpdateMarker={[MockFunction]}
+  marker={null}
   open={true}
 />
 `;

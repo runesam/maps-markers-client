@@ -1,9 +1,9 @@
 import React from 'react';
+import toJson from 'enzyme-to-json';
 import { mount, shallow } from 'enzyme';
 
 import * as promiseModule from 'module/promise.module';
 import NewMarkerDialogContainer, { NewMarkerDialog } from 'app/newMarkerDialog.component';
-import toJson from 'enzyme-to-json';
 
 describe('NewMarkerDialog', () => {
     const props = {
@@ -11,6 +11,7 @@ describe('NewMarkerDialog', () => {
         apiKey: 'fakeKey',
         handleClose: jest.fn(),
         handleAddMarker: jest.fn(),
+        handleUpdateMarker: jest.fn(),
         classes: { root: '', error: '' },
     };
 
@@ -199,6 +200,50 @@ describe('NewMarkerDialog', () => {
             const response = 'failed to add';
             promiseModule.addMarker.mockRejectedValue({ response });
             instance.handleAddAddress();
+            setTimeout(() => {
+                expect(wrapper.state().error).toBe(response);
+                done();
+            });
+        });
+    });
+
+    describe('handleAddAddress method', () => {
+        let promiseModuleSpy;
+
+        const marker = { id: 3, name: 'new address to update' };
+        const wrapper = shallow(<NewMarkerDialog {...props} marker={marker} />);
+        const markers = [{ id: 5, name: 'address' }];
+        const instance = wrapper.instance();
+
+        wrapper.setState({ markers });
+
+        beforeEach(() => {
+            jest.clearAllMocks();
+            promiseModuleSpy = jest.spyOn(promiseModule, 'updateMarker');
+        });
+
+        it('calls the updateMarker method with right arguments', () => {
+            promiseModule.updateMarker.mockResolvedValue({ data: markers[0] });
+            instance.handleUpdateAddress();
+            expect(promiseModuleSpy).toHaveBeenCalledTimes(1);
+            expect(promiseModuleSpy).toHaveBeenCalledWith({ ...markers[0], idToReplace: 3 });
+        });
+
+        it('calls handleUpdateMarker from props with the right argument', (done) => {
+            const data = { ...markers[0], idToReplace: 3 };
+            promiseModule.updateMarker.mockResolvedValue({ data });
+            instance.handleUpdateAddress();
+            setTimeout(() => {
+                expect(props.handleUpdateMarker).toHaveBeenCalledTimes(1);
+                expect(props.handleUpdateMarker).toHaveBeenCalledWith(data);
+                done();
+            });
+        });
+
+        it('calls update the error state with the reason', (done) => {
+            const response = 'failed to update';
+            promiseModule.updateMarker.mockRejectedValue({ response });
+            instance.handleUpdateAddress();
             setTimeout(() => {
                 expect(wrapper.state().error).toBe(response);
                 done();

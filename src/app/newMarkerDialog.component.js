@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 import MapComponent from './map.component';
-import { getGeoForAddress, addMarker } from '../module/promise.module';
+import { getGeoForAddress, addMarker, updateMarker } from '../module/promise.module';
 
 type state = {
     error: string,
@@ -21,11 +21,17 @@ type props = {
     open: boolean,
     apiKey: string,
     handleClose: Function,
+    marker?: { id: string },
     handleAddMarker: Function,
+    handleUpdateMarker: Function,
     classes: { root: {}, error: {} },
 };
 
 export class NewMarkerDialog extends PureComponent<props, state> {
+    static defaultProps = {
+        marker: null,
+    };
+
     state = {
         error: '',
         markers: [],
@@ -81,15 +87,31 @@ export class NewMarkerDialog extends PureComponent<props, state> {
     handleAddAddress = () => {
         const { markers } = this.state;
         const { handleAddMarker } = this.props;
+
         addMarker(markers[0])
             .then(({ data }) => handleAddMarker(data))
-            .catch(({ response: error }) => this.setState({ error }));
+            .catch(({ response: error }) => this.setState({ error, markers: [] }));
+    };
+
+    handleUpdateAddress = () => {
+        const { marker } = this.props;
+        const { markers } = this.state;
+
+        const { handleUpdateMarker } = this.props;
+        const markerToUpdate = {
+            ...markers[0],
+            idToReplace: marker ? marker.id : undefined,
+        };
+        updateMarker(markerToUpdate)
+            .then(({ data }) => handleUpdateMarker(data))
+            .catch(({ response: error }) => this.setState({ error, markers: [] }));
     };
 
     render() {
         const {
             open,
             apiKey,
+            marker,
             classes,
             handleClose,
         } = this.props;
@@ -111,7 +133,9 @@ export class NewMarkerDialog extends PureComponent<props, state> {
                 aria-describedby="new marker dialog input"
             >
                 <Grid container direction="column">
-                    <Typography color="primary" variant="h6">New Marker</Typography>
+                    <Typography color="primary" variant="h6">
+                        {marker ? 'Edit Marker' : 'New Marker'}
+                    </Typography>
                     <TextField
                         name="address"
                         label="address"
@@ -135,9 +159,9 @@ export class NewMarkerDialog extends PureComponent<props, state> {
                             <Button
                                 color="primary"
                                 variant="contained"
-                                onClick={this.handleAddAddress}
+                                onClick={marker ? this.handleUpdateAddress : this.handleAddAddress}
                             >
-                                add this address
+                                {`${marker ? 'Update' : 'Add'} this address`}
                             </Button>
                         </>
                     )}
