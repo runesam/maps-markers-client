@@ -37,6 +37,11 @@ export const themeProperties = {
                 width: '100%',
             },
         },
+        MuiDivider: {
+            light: {
+                backgroundColor: palette.grayed.main,
+            },
+        },
     },
 };
 
