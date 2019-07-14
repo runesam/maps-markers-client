@@ -5,7 +5,7 @@ A user should be able to view, create, edit and delete this markers.
 All the changes should be immediately visible on the map.
 
 <p align="center">
-  <img height="500" alt="app flow]" src="docs/01.gif">
+  <img alt="app flow]" src="docs/01.gif">
 </p>
 
 ## Run The APP
@@ -48,17 +48,17 @@ then navigate to the project root dir `cd maps-markers-client`
 ## app flow
 #### Add markers
 <p align="center">
-  <img height="500" alt="app flow]" src="docs/02.gif">
+  <img alt="app flow]" src="docs/02.gif">
 </p>
 
 #### Delete markers
 <p align="center">
-  <img height="500" alt="app flow]" src="docs/03.gif">
+  <img alt="app flow]" src="docs/03.gif">
 </p>
 
 #### Update markers
 <p align="center">
-  <img height="500" alt="app flow]" src="docs/04.gif">
+  <img alt="app flow]" src="docs/04.gif">
 </p>
 
 ## Find in the App
