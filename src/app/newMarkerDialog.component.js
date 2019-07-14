@@ -120,6 +120,7 @@ export class NewMarkerDialog extends PureComponent<props, state> {
                         label="address"
                         margin="normal"
                         value={address}
+                        autoComplete="off"
                         disabled={searching}
                         onChange={this.handleChange}
                         placeholder="please type the address here"
