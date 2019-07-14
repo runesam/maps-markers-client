@@ -34,9 +34,7 @@ then navigate to the project root dir `cd maps-markers-client`
   - default client server port is `8181` please make sure it is available.
   
 ## tasks
-```html
-<span style="color: red">please make sure the app server's client side is up and running as the app tries to fetch user data on start `google api key` and `pre saved markers`</span>
-```
+<b><i>please make sure the app server's client side is up and running as the app tries to fetch user data on start `google api key` and `pre saved markers`</i></b>
 
 #### test (unit test with coverage report)
 * test `yarn test`
