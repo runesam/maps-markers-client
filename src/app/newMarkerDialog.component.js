@@ -51,34 +51,11 @@ export class NewMarkerDialog extends PureComponent<props, state> {
         this.setState({ [name]: value });
     };
 
-    mapMarkers = (
-        results: Array<{
-            id: string,
-            name: string,
-            geometry: {
-                location: {
-                    id: string,
-                    name: string,
-                },
-            },
-        }>,
-    ) => {
-        const markers = results.map((result) => {
-            const { geometry: { location }, id, name } = result;
-            const marker: { id: string, name: string } = location;
-            marker.id = id;
-            marker.name = name;
-            return marker;
-        });
-
-        this.setState({ markers, error: '' });
-    };
-
     handleSearch = () => {
         const { address } = this.state;
         this.setState({ searching: true }, () => {
             getGeoForAddress(address)
-                .then(res => this.mapMarkers(res.data.results))
+                .then(({ data: markers }) => this.setState({ markers, error: '' }))
                 .catch(({ response: error }) => this.setState({ error, markers: [] }))
                 .finally(() => this.setState({ searching: false }));
         });
@@ -97,14 +74,16 @@ export class NewMarkerDialog extends PureComponent<props, state> {
         const { marker } = this.props;
         const { markers } = this.state;
 
-        const { handleUpdateMarker } = this.props;
-        const markerToUpdate = {
-            ...markers[0],
-            idToReplace: marker ? marker.id : undefined,
-        };
-        updateMarker(markerToUpdate)
-            .then(({ data }) => handleUpdateMarker(data))
-            .catch(({ response: error }) => this.setState({ error, markers: [] }));
+        if (marker && marker.id) {
+            const { handleUpdateMarker } = this.props;
+            const markerToUpdate = {
+                ...markers[0],
+                idToReplace: marker.id,
+            };
+            updateMarker(markerToUpdate)
+                .then(({ data }) => handleUpdateMarker(data))
+                .catch(({ response: error }) => this.setState({ error, markers: [] }));
+        }
     };
 
     render() {

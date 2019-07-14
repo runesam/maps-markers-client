@@ -73,33 +73,6 @@ describe('NewMarkerDialog', () => {
         });
     });
 
-    describe('mapMarkers method', () => {
-        const wrapper = shallow(<NewMarkerDialog {...props} />);
-        const instance = wrapper.instance();
-        instance.setState({ error: 'simulate error message' });
-
-        it('map results, sets it to the instance markers state, and sets the error state to empty string', () => {
-            const results = [
-                { geometry: { location: { lat: 1, lng: 2 } }, id: 1, name: 'address 1' },
-                { geometry: { location: { lat: 3, lng: 4 } }, id: 2, name: 'address 2' },
-            ];
-            expect(wrapper.state().markers).toEqual([]);
-            expect(wrapper.state().error).toEqual('simulate error message');
-
-            instance.mapMarkers(results);
-
-            const expected = [
-                { lat: 1, lng: 2, id: 1, name: 'address 1' },
-                { lat: 3, lng: 4, id: 2, name: 'address 2' },
-            ];
-
-            const { markers, error } = wrapper.state();
-
-            expect(markers).toEqual(expected);
-            expect(error).toEqual('');
-        });
-    });
-
     describe('handleSearch method', () => {
         let promiseModuleSpy;
 
@@ -126,18 +99,21 @@ describe('NewMarkerDialog', () => {
             expect(promiseModuleSpy).toHaveBeenCalledWith(address);
         });
 
-        it('calls the mapMarkers instance method on getGeoForAddress resolve', (done) => {
-            const spy = jest.spyOn(instance, 'mapMarkers');
-            const results = [
+        it('update the markers state and clear the error on getGeoForAddress resolve', (done) => {
+            const data = [
                 { geometry: { location: { lat: 1, lng: 2 } }, id: 1, name: 'address 1' },
                 { geometry: { location: { lat: 3, lng: 4 } }, id: 2, name: 'address 2' },
             ];
 
-            promiseModule.getGeoForAddress.mockResolvedValue({ data: { results } });
+            wrapper.setState({ error: 'some error message' });
+            promiseModule.getGeoForAddress.mockResolvedValue({ data });
+
             instance.handleSearch();
             setTimeout(() => {
-                expect(spy).toHaveBeenCalledTimes(1);
-                expect(spy).toHaveBeenCalledWith(results);
+                const state = wrapper.state();
+
+                expect(state.error).toBe('');
+                expect(state.markers).toEqual(data);
                 done();
             });
         });
@@ -220,6 +196,13 @@ describe('NewMarkerDialog', () => {
         beforeEach(() => {
             jest.clearAllMocks();
             promiseModuleSpy = jest.spyOn(promiseModule, 'updateMarker');
+        });
+
+        it('won\'t call any if there is no valid marker from props', () => {
+            const tempWrapper = shallow(<NewMarkerDialog {...props} />);
+            const tempInstance = tempWrapper.instance();
+            tempInstance.handleUpdateAddress();
+            expect(promiseModuleSpy).toHaveBeenCalledTimes(0);
         });
 
         it('calls the updateMarker method with right arguments', () => {
