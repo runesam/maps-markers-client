@@ -1,5 +1,9 @@
+// @flow
+
 import axios from 'axios';
 
-const http = axios.create({ baseURL: 'http://localhost:5000' });
+declare var API_URL:string;
+
+const http = axios.create({ baseURL: API_URL });
 
 export default http;

@@ -34,7 +34,13 @@ then navigate to the project root dir `cd maps-markers-client`
   - default client server port is `8181` please make sure it is available.
   
 ## tasks
-<b><i>please make sure the app server's client side is up and running as the app tries to fetch user data on start `google api key` and `pre saved markers`</i></b>
+<b><i>
+*   please make sure the app server's client side is up and running as the app tries to fetch user data on start `google api key` and `pre saved markers`
+*   the default API_URL is set to `http://localhost:5000` in the `.env` file. if the API server will run on different port; we need to update it here as well.
+</i></b>
+
+#### serve (run the app locally via webpack-dev-server)
+* test `yarn serve`
 
 #### test (unit test with coverage report)
 * test `yarn test`

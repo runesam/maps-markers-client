@@ -1,9 +1,12 @@
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 const WebpackBar = require('webpackbar');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 
 const common = require('./webpack.common.js');
+
+const { API_URL } = process.env;
 
 module.exports = () => merge(common, {
 	devtool: 'cheap',
@@ -56,9 +59,8 @@ module.exports = () => merge(common, {
 		runtimeChunk: true,
 	},
 	plugins: [
-		new WebpackBar({
-			name: 'maps-markers',
-		}),
+		new WebpackBar({ name: 'maps-markers' }),
+        new webpack.DefinePlugin({ API_URL: `'${API_URL}'` }),
 		new CompressionPlugin({
 			algorithm: 'gzip',
 			test: /\.js$|\.css$|\.html$/,

@@ -1,6 +1,11 @@
+import path from 'path';
 import 'core-js/stable';
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+
+window.API_URL = process.env.API_URL;
 
 expect.extend({
     toContainObject(received, argument) {
